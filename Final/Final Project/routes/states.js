@@ -6,7 +6,7 @@ const router = express.Router();
 const statesController = require('../controllers/statesController');
 router.route('/')
     .get(statesController.getStates);
-router.use('/:state', require('../middleware/stateData'));
+router.use('/:state', require('../controllers/verifyStateData'));
 router.route('/:state')
     .get(statesController.getState);
 router.route('/:state/funfact')
