@@ -30,13 +30,13 @@ async function getStateProperty(req, res) {
         return res.status(400).json({ 'message': 'The state property is required, and is missing.' });
     }
     const statePropertyAliases = new Map([
-        ["capital", "capital_city"],
+        ["admitted", "admission_date"],
         ["admission", "admission_date"],
-        ["admitted", "admission_date"]
+        ["capital", "capital_city"]
     ]);
     const statePropertyLabels = new Map([
-        ["capital_city", "capital"],
-        ["admission_date", "admitted"]
+        ["admission_date", "admitted"],
+        ["capital_city", "capital"]
     ]);
     const statePropertyHandlers = new Map([
         ["population", (pop) => pop.toLocaleString("en-US")]
@@ -64,20 +64,6 @@ async function getStateFunFact(req, res) {
         'funfact': req.stateData.funfacts[Math.floor(Math.random() * req.stateData.funfacts.length)]
     });
 }
-{import("express").RequestHandler}
-async function postStateFunFact(req, res) {
-    if (!req?.body?.funfacts) {
-        return res.status(400).json({ 'message': 'State fun facts value required' });
-    }
-    if (!Array.isArray(req?.body?.funfacts)) {
-        return res.status(400).json({ 'message': 'The state fun facts value must be an array' });
-    }
-    let funfacts = req.stateData.funfacts;
-    if (!Array.isArray(funfacts)) funfacts = [];
-    funfacts.push(...req.body.funfacts);
-    let stateData = await State.findOneAndUpdate({ stateCode: req.stateData.code }, { funfacts }, { upsert: true, setDefaultsOnInsert: true });
-    stateData.funfacts = funfacts;
-    res.json(stateData);
 }
 {import("express").RequestHandler}
 async function replaceStateFunFact(req, res) {
@@ -125,9 +111,9 @@ async function deleteStateFunFact(req, res) {
 module.exports = {
     getStates,
     getState,
-    getStateProperty,
-    getStateFunFact,
-    postStateFunFact,  
-    replaceStateFunFact,
-    deleteStateFunFact
+    getProperty,
+    getFunFact,
+    postFunFact,  
+    replaceFunFact,
+    deleteFunFact
 }
